@@ -6,6 +6,7 @@ from sklearn import tree
 from sklearn.metrics import confusion_matrix, classification_report
 
 from skimage import io
+from skimage.transform import resize
 import torch
 
 
@@ -48,10 +49,9 @@ if __name__ == '__main__':
                                   str(i) + '_' +
                                   label[0:2] + '_' +
                                   str(j).zfill(4) + '.png')
-                # TODO: should we flatten here?
-                dataset.inputs.append(image.flatten())
+                # TODO: should we flatten or resize here?
+                dataset.inputs.append(resize(image, (60, 160), preserve_range=True).flatten())
                 dataset.targets.append(label)
-                print(image)
 
     # TODO: partition into testing and dev
 
@@ -73,9 +73,8 @@ if __name__ == '__main__':
                                   str(i) + '_' +
                                   label[0:2] + '_' +
                                   str(j).zfill(4) + '.png')
-                test_data.inputs.append(image.flatten())
+                test_data.inputs.append(resize(image, (60, 160), preserve_range=True).flatten())
                 test_data.targets.append(label)
-                print(image)
 
     print('Testing...')
     predicted = bst_dt.predict(test_data.inputs)
