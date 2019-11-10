@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 from sklearn import datasets
 from sklearn import svm
+from sklearn import tree
+
+from sklearn.metrics import confusion_matrix, classification_report
 
 from skimage import io
 import torch
@@ -35,10 +38,9 @@ if __name__ == '__main__':
     labels = ['01_palm', '02_l', '03_fist', '04_fist_moved', '05_thumb',
               '06_index', '07_ok', '08_palm_moved', '09_c', '10_down', ]
 
-    # TODO: remove testing data first
     for i in range(10):
         for label in labels:
-            for j in range(1, 201):
+            for j in range(1, 61):  # 201):
                 label.split()
                 image = io.imread('data/leapGestRecog/0' +
                                   str(i) + '/' +
@@ -46,6 +48,36 @@ if __name__ == '__main__':
                                   str(i) + '_' +
                                   label[0:2] + '_' +
                                   str(j).zfill(4) + '.png')
-                dataset.inputs.append(image)
+                # TODO: should we flatten here?
+                dataset.inputs.append(image.flatten())
                 dataset.targets.append(label)
                 print(image)
+
+    # TODO: partition into testing and dev
+
+    print('Model Selection...')
+    bst_dt = tree.DecisionTreeClassifier(criterion='entropy', max_depth=8, max_features=240)
+
+    print('Training...')
+    bst_dt.fit(X=dataset.inputs, y=dataset.targets)
+
+    print('Loading Testing Data...')
+    test_data = DataSet()
+    for i in range(10):
+        for label in labels:
+            for j in range(61, 91):  # 1, 201):
+                label.split()
+                image = io.imread('data/leapGestRecog/0' +
+                                  str(i) + '/' +
+                                  label + '/frame_0' +
+                                  str(i) + '_' +
+                                  label[0:2] + '_' +
+                                  str(j).zfill(4) + '.png')
+                test_data.inputs.append(image.flatten())
+                test_data.targets.append(label)
+                print(image)
+
+    print('Testing...')
+    predicted = bst_dt.predict(test_data.inputs)
+    print("\nClassification Report")
+    print(classification_report(predicted, test_data.targets))
