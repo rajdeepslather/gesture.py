@@ -10,8 +10,7 @@ pandas = "*"
 matplotlib = "*"
 scikit-learn = "*"
 scikit-image = "*"
-# Need to install torch manually
-torch = "*"
+keras = "*"
 
 [requires]
 python_version = "3.7"

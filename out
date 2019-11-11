@@ -1,0 +1,27 @@
+C:\Users\Rajdeep\.virtualenvs\gesture.py-DXXORFZx\Scripts\python.exe C:/Projects/gesture.py/DT.py
+Loading Training Data...
+Model Selection...
+Training...
+Loading Testing Data...
+Testing...
+
+Classification Report
+               precision    recall  f1-score   support
+
+      01_palm       0.81      0.91      0.86       444
+         02_l       0.83      0.93      0.88       447
+      03_fist       0.81      0.85      0.83       481
+04_fist_moved       0.90      0.77      0.83       588
+     05_thumb       0.92      0.83      0.87       553
+     06_index       0.92      0.91      0.92       502
+        07_ok       0.90      0.86      0.88       518
+08_palm_moved       0.89      0.83      0.86       538
+         09_c       0.84      0.84      0.84       503
+      10_down       0.83      0.97      0.89       426
+
+     accuracy                           0.86      5000
+    macro avg       0.86      0.87      0.87      5000
+ weighted avg       0.87      0.86      0.86      5000
+
+
+Process finished with exit code 0
