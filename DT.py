@@ -45,7 +45,7 @@ if __name__ == '__main__':
                 dataset.targets.append(label)
 
     print('Model Selection...')
-    bst_dt = tree.DecisionTreeClassifier(criterion='entropy', max_depth=8, max_features=240)
+    bst_dt = tree.DecisionTreeClassifier(criterion='entropy', max_depth=10, max_features=200)
 
     print('Training...')
     bst_dt.fit(X=dataset.inputs, y=dataset.targets)
@@ -70,4 +70,7 @@ if __name__ == '__main__':
     print('Testing...')
     predicted = bst_dt.predict(test_data.inputs)
     print("\nClassification Report")
-    print(classification_report(predicted, test_data.targets))
+    print(classification_report(test_data.targets, predicted))
+
+    print("\nConfusion Matrix")
+    print(confusion_matrix(test_data.targets, predicted))
