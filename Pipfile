@@ -12,6 +12,10 @@ scikit-learn = "*"
 scikit-image = "*"
 keras = "*"
 tensorflow = "*"
+ipython = "*"
+graphviz = "*"
+ipywidgets = "*"
+pydotplus = "*"
 
 [requires]
 python_version = "3.7"
