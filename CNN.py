@@ -101,13 +101,6 @@ if __name__ == '__main__':
     # compiling CNN
     classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-    #    classifier.fit_generator(
-    #        training_set,
-    #        steps_per_epoch=18000,
-    #        epochs=5,
-    #        validation_data=test_set,
-    #        validation_steps=2000)
-
     from keras.utils import to_categorical
 
     y_data = to_categorical(y_data)

@@ -66,7 +66,6 @@ if __name__ == '__main__':
     # Model Selection
 
     print('Model Selection...')
-    # bst_dt = tree.DecisionTreeClassifier(criterion='entropy', max_depth=10, max_features=200)
     testScores = {}
     myMaxScore = 0
     bestFunctionPrameters = ""
@@ -86,15 +85,14 @@ if __name__ == '__main__':
                 bestFunctionPrameters = j + "_" + str(i)
 
     # Training
-
     print('Training...')
     bst_dt = clf_cv5
 
     labels = ['01_palm', '02_l', '03_fist', '04_fist_moved', '05_thumb',
               '06_index', '07_ok', '08_palm_moved', '09_c', '10_down', ]
     print('Loading Testing Data...')
-    # 25% to test
 
+    # 25% to test
     test_data = DataSet()
     for i in range(10):
         for label in labels:
