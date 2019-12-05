@@ -61,7 +61,7 @@ if __name__ == '__main__':
                 dataset.targets.append(int(label[1]))
     x_data_org = np.array(dataset.inputs, dtype = 'float32')
     y_data_org = np.array(dataset.targets)
-    y_data_org = y_data.reshape(15000, 1) # Reshape to be the correct size
+    y_data_org = y_data_org.reshape(15000, 1) # Reshape to be the correct size
                 
     # 25% to test
 
@@ -79,9 +79,9 @@ if __name__ == '__main__':
                 img_blurred = gaussian(image, sigma=1.65)
                 test_data.inputs.append(resize(img_blurred, (30, 80), preserve_range=True))
                 test_data.targets.append(int(label[1]))
-    x_validate = np.array(test_data.inputs, dtype = 'float32')
-    y_validate = np.array(test_data.targets)
-    y_validate = y_validate.reshape(5000, 1) # Reshape to be the correct size
+    x_test_org = np.array(test_data.inputs, dtype = 'float32')
+    y_test_org = np.array(test_data.targets)
+    y_test_org = y_test_org.reshape(5000, 1) # Reshape to be the correct size
     
     # shuffle data
     x_data, y_data = shuffle(x_data_org, y_data_org)
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     classifier = Sequential()
 
     # Convolution
-    classifier.add(Convolution2D(32, 3, 3, input_shape = (30, 80, 1), activation= 'relu'))
+    classifier.add(Convolution2D(16, 3, 3, input_shape = (30, 80, 1), activation= 'relu'))
 
     # Pooling
     classifier.add(MaxPooling2D(pool_size = (2,2)))
@@ -121,11 +121,13 @@ if __name__ == '__main__':
     
     from keras.utils import to_categorical
     y_data = to_categorical(y_data)
-    x_data = x_data.reshape((6329, 30, 80, 1))
+    x_data = x_data.reshape((len(x_data), 30, 80, 1))
 #    x_data /= 255
     y_validate = to_categorical(y_validate)
-    x_validate = x_validate.reshape((2109, 30, 80, 1))
+    x_validate = x_validate.reshape((len(x_validate), 30, 80, 1))
 #    x_validate /= 255
+    y_test = to_categorical(y_test_org)
+    x_test = x_test_org.reshape((len(x_test_org), 30, 80, 1))
     
     H = classifier.fit(x_data, y_data, 
                    epochs=5, batch_size=32, verbose=1, 
@@ -133,15 +135,18 @@ if __name__ == '__main__':
 
 
     print('Testing...')
-    predicted = classifier.predict(x_validate)
+    predicted = classifier.predict(x_test)
     predicted_classes = np.argmax(predicted, axis=1)
     
     print("\nClassification Report")
 
-    print(classification_report(np.argmax(y_validate, axis=1), predicted_classes))
+    print(classification_report(np.argmax(y_test, axis=1), predicted_classes))
     print("\nConfusion Matrix")
-    print(confusion_matrix(np.argmax(y_validate, axis=1), predicted_classes))
+    print(confusion_matrix(np.argmax(y_test, axis=1), predicted_classes))
 
+    print (classifier.summary())
+    
+    
     plt.plot(H.history['loss'])
     plt.plot(H.history['val_loss'])
     plt.title('Model Loss')
@@ -157,3 +162,5 @@ if __name__ == '__main__':
     plt.xlabel('Epochs')
     plt.legend(['train', 'test'])
     plt.show()
+    
+    
